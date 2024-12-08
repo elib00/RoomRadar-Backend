@@ -17,6 +17,9 @@ builder.Services.AddDbContext<BackendDbContext>(
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

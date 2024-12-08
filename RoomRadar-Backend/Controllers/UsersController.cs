@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RoomRadar_Backend.Models;
+using RoomRadar_Backend.DTO;
+using RoomRadar_Backend.Services;
+using RoomRadar_Backend.Services.Interfaces;
 
 namespace RoomRadar_Backend.Controllers
 {
@@ -7,30 +9,33 @@ namespace RoomRadar_Backend.Controllers
     [Route("api/users/")]
     public class UsersController: ControllerBase
     {
+        private readonly IUserService _userService;
+
+        public UsersController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+
         [HttpGet]
         [Route("", Name = "GetUsers")]
         public IActionResult GetUsers()
         {
-            return Ok(new User
-            {
-                Id = 1, 
-                Account = new UserAccount
-                {
-                    Id = 1,
-                    Email = "joshuanapinas@gmail.com",
-                    Password = "123",
-                    UserId = 1
-                },
-                Profile = new UserProfile
-                {
-                    Id = 1,
-                    IsLandLord = false,
-                    FirstName = "Joshua",
-                    LastName = "Napinas",
-                    ContactNumber = "09292260864",
-                    UserId = 1
-                }
-            });
+            UserResponseDTO response = _userService.GetAllUsers();
+            return Ok(response); 
         }    
+
+        [HttpGet    ]
+        [Route("{id}/", Name = "GetUserById")]
+        public IActionResult GetUserById(int id)
+        {
+            UserResponseDTO response = _userService.GetUserById(id);
+            if (!response.IsSuccess && response.Type == "UserNotFound")
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
     }
 }
