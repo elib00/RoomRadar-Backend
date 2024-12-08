@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RoomRadar_Backend.Models;
 using RoomRadar_Backend.Services.Interfaces;
+using RoomRadar_Backend.DTO;
 
 namespace RoomRadar_Backend.Controllers
 {
@@ -17,10 +18,17 @@ namespace RoomRadar_Backend.Controllers
 
         [HttpPost]
         [Route("register")]
-        public IActionResult CreateUser(User user)
+        public IActionResult CreateUser([FromBody] UserRegistrationDTO userRegistration)
         {
 
-            return Ok(user);
+            return Ok(userRegistration);
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public IActionResult ValidateUser([FromBody] UserValidationDTO userValidation)
+        {
+            return Ok(userValidation);
         }
 
     }

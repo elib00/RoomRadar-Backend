@@ -1,6 +1,7 @@
 ﻿using RoomRadar_Backend.Services.Interfaces;
 using RoomRadar_Backend.Repository.Interfaces;
 using RoomRadar_Backend.Models;
+using RoomRadar_Backend.DTO;
 
 namespace RoomRadar_Backend.Services
 {
@@ -13,14 +14,16 @@ namespace RoomRadar_Backend.Services
             _authRepository = authRepository;
         }
 
-        public User ValidateUser(User user)
+        public User ValidateUser(UserValidationDTO userValidationCredentails)
         {
-            return user;
+            User userFromDb = _authRepository.ValidateUser(userValidationCredentails);
+            return userFromDb;
         }
 
-        public User CreateUser(User user)
+        public User CreateUser(UserRegistrationDTO userRegistrationCredentials)
         {
-            return user;
+            User newUser = _authRepository.CreateUser(userRegistrationCredentials);
+            return newUser;
         }
     }
 }
