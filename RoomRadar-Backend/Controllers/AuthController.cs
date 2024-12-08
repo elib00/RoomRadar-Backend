@@ -20,20 +20,33 @@ namespace RoomRadar_Backend.Controllers
         [Route("register")]
         public IActionResult CreateUser([FromBody] UserRegistrationDTO userRegistrationCredentials)
         {
-            User newUser = _authService.CreateUser(userRegistrationCredentials);
-            return Ok(newUser);
+            AuthResponseDTO response = _authService.CreateUser(userRegistrationCredentials);
+
+            if (!response.IsSuccess && response.Type == "EmailAlreadyInUse")
+            {
+                return Conflict(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
         [Route("login")]
         public IActionResult ValidateUser([FromBody] UserValidationDTO userValidationCredentials)
         {
-            User userFromDb = _authService.ValidateUser(userValidationCredentials);
-            if(userFromDb != null)
+            AuthResponseDTO response = _authService.ValidateUser(userValidationCredentials);
+            if (!response.IsSuccess)
             {
-                return Ok(userFromDb);
+                if(response.Type == "IncorrectPassword")
+                {
+                    return Unauthorized(response);
+                }else if(response.Type == "UserNotFound")
+                {
+                    return NotFound(response);
+                }
             }
-            return NotFound("User not found");
+            
+            return Ok(response);
         }
     }
 }

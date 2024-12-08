@@ -1,5 +1,4 @@
-﻿using RoomRadar_Backend.DTO;
-using RoomRadar_Backend.Models;
+﻿using RoomRadar_Backend.Models;
 using RoomRadar_Backend.Repository.Interfaces;
 using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
@@ -9,71 +8,29 @@ namespace RoomRadar_Backend.Repository
     public class AuthRepository : IAuthRepository
     {
         private readonly BackendDbContext? _backendDbContext;
-           
+
         public AuthRepository(BackendDbContext? backendDbContext)
         {
             _backendDbContext = backendDbContext;
         }
 
-        public User ValidateUser(UserValidationDTO userValidationCredentials)
+        public bool IsExistingEmail(string email)
         {
-            string? email = userValidationCredentials.Email;
-            string? password = userValidationCredentials.Password;
-            
-            User? userFromDB = UserExists(email);
-
-            if(userFromDB != null)
-            {
-                if(ValidatePassword(password, userFromDB.Account.Password))
-                {
-                    return userFromDB;
-                }
-            }
-
-            return userFromDB;
+            return _backendDbContext.UserAccounts.Any(ua => ua.Email == email);
         }
 
-        public User CreateUser(UserRegistrationDTO userRegistrationCredentials)
+        public User GetUserByEmail(string email)
         {
-            UserProfile profile = new UserProfile
-            {
-                IsLandLord = userRegistrationCredentials.IsLandLord,
-                FirstName = userRegistrationCredentials.FirstName,
-                LastName = userRegistrationCredentials.LastName,
-                ContactNumber = userRegistrationCredentials.ContactNumber,
-                Gender = userRegistrationCredentials.Gender,
-                BirthDate = userRegistrationCredentials.BirthDate
-            };
+            return _backendDbContext.Users
+               .Include(u => u.Account)
+               .Include(u => u.Profile)
+               .FirstOrDefault(u => u.Account.Email == email);
+        }
 
-            UserAccount account = new UserAccount
-            {
-                Email = userRegistrationCredentials.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(userRegistrationCredentials.Password)
-            };
-
-            User newUser = new User
-            {
-                Account = account,
-                Profile = profile
-            };
-
+        public void CreateUser(User newUser)
+        {
             _backendDbContext.Users.Add(newUser);
             _backendDbContext.SaveChanges();
-
-            return newUser;
-        }
-        private User UserExists(string email)
-        {
-            User? user = _backendDbContext.Users
-                .Include(u => u.Account)
-                .Include(u => u.Profile)
-                .FirstOrDefault(u => u.Account.Email == email);
-            return user;
-        }
-
-        private bool ValidatePassword(string password, string pwFromDb)
-        {
-            return BCrypt.Net.BCrypt.Verify(password, pwFromDb);
         }
 
     }
