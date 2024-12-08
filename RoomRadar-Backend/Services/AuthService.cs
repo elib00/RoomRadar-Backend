@@ -14,15 +14,15 @@ namespace RoomRadar_Backend.Services
             _authRepository = authRepository;
         }
 
-        public User ValidateUser(UserValidationDTO userValidationCredentails)
+        public User ValidateUser(UserValidationDTO userValidationCredentials)
         {
-            User userFromDb = _authRepository.ValidateUser(userValidationCredentails);
+            User? userFromDb = _authRepository.ValidateUser(userValidationCredentials);
             return userFromDb;
         }
 
         public User CreateUser(UserRegistrationDTO userRegistrationCredentials)
         {
-            User newUser = _authRepository.CreateUser(userRegistrationCredentials);
+            User? newUser = _authRepository.CreateUser(userRegistrationCredentials);
             return newUser;
         }
     }

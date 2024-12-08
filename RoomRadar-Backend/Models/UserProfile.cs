@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace RoomRadar_Backend.Models
 {
@@ -27,6 +28,7 @@ namespace RoomRadar_Backend.Models
         public int UserId { get; set; }  // Foreign key for User
 
         // Navigation property to access the associated User
+        [JsonIgnore]
         public User? User { get; set; }
 
     }

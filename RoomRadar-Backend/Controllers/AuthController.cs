@@ -18,18 +18,22 @@ namespace RoomRadar_Backend.Controllers
 
         [HttpPost]
         [Route("register")]
-        public IActionResult CreateUser([FromBody] UserRegistrationDTO userRegistration)
+        public IActionResult CreateUser([FromBody] UserRegistrationDTO userRegistrationCredentials)
         {
-
-            return Ok(userRegistration);
+            User newUser = _authService.CreateUser(userRegistrationCredentials);
+            return Ok(newUser);
         }
 
         [HttpPost]
         [Route("login")]
-        public IActionResult ValidateUser([FromBody] UserValidationDTO userValidation)
+        public IActionResult ValidateUser([FromBody] UserValidationDTO userValidationCredentials)
         {
-            return Ok(userValidation);
+            User userFromDb = _authService.ValidateUser(userValidationCredentials);
+            if(userFromDb != null)
+            {
+                return Ok(userFromDb);
+            }
+            return NotFound("User not found");
         }
-
     }
 }

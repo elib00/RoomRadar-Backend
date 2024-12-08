@@ -2,6 +2,7 @@
 using RoomRadar_Backend.Models;
 using RoomRadar_Backend.Repository.Interfaces;
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace RoomRadar_Backend.Repository
 {
@@ -16,10 +17,10 @@ namespace RoomRadar_Backend.Repository
 
         public User ValidateUser(UserValidationDTO userValidationCredentials)
         {
-            string email = userValidationCredentials.Email;
-            string password = userValidationCredentials.Password;
+            string? email = userValidationCredentials.Email;
+            string? password = userValidationCredentials.Password;
             
-            User userFromDB = UserExists(email);
+            User? userFromDB = UserExists(email);
 
             if(userFromDB != null)
             {
@@ -63,7 +64,10 @@ namespace RoomRadar_Backend.Repository
         }
         private User UserExists(string email)
         {
-            User user = _backendDbContext.Users.FirstOrDefault(u => u.Account.Email == email);
+            User? user = _backendDbContext.Users
+                .Include(u => u.Account)
+                .Include(u => u.Profile)
+                .FirstOrDefault(u => u.Account.Email == email);
             return user;
         }
 
