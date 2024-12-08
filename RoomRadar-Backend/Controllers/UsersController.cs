@@ -4,22 +4,33 @@ using RoomRadar_Backend.Models;
 namespace RoomRadar_Backend.Controllers
 {
     [ApiController]
+    [Route("api/users/")]
     public class UsersController: ControllerBase
     {
         [HttpGet]
-        [Route("api/users")]
-        public JsonResult GetUsers()
+        [Route("", Name = "GetUsers")]
+        public IActionResult GetUsers()
         {
-            return new JsonResult(new User
+            return Ok(new User
             {
-                Id = 1,
-                FirstName = "Joshua",
-                LastName = "Napinas",
-                Email = "joshuanapinas@gmail.com",
-                ContactNumber = "09292260864",
-                IsLandLord = true
+                Id = 1, 
+                Account = new UserAccount
+                {
+                    Id = 1,
+                    Email = "joshuanapinas@gmail.com",
+                    Password = "123",
+                    UserId = 1
+                },
+                Profile = new UserProfile
+                {
+                    Id = 1,
+                    IsLandLord = false,
+                    FirstName = "Joshua",
+                    LastName = "Napinas",
+                    ContactNumber = "09292260864",
+                    UserId = 1
+                }
             });
-
         }    
     }
 }
