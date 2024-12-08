@@ -23,10 +23,14 @@ namespace RoomRadar_Backend.Repository
         public User GetUserById(int id)
         {
             return _backendDbContext.Users
-                .Include (u => u.Account)
+                .Include(u => u.Account)
                 .Include(u => u.Profile)
                 .FirstOrDefault(u => u.Id == id);
         }
 
+        public List<PendingLandLord> GetAllPendingLandLords()
+        {
+            return _backendDbContext.PendingLandLords.Include(pl => pl.LandLord).ToList();
+        }
     }
 }

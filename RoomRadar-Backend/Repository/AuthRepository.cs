@@ -33,5 +33,16 @@ namespace RoomRadar_Backend.Repository
             _backendDbContext.SaveChanges();
         }
 
+        public void SaveAsPending(PendingLandLord pendingUser)
+        {
+            _backendDbContext.PendingLandLords.Add(pendingUser);
+            _backendDbContext.SaveChanges();
+        }
+
+        public bool HasSubmittedLandLordRequestAlready(User newUser)
+        {
+            return _backendDbContext.PendingLandLords
+                .Any(pl => pl.LandLord.Account.Email == newUser.Account.Email);
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace RoomRadar_Backend.Models
         public DateTime BirthDate { get; set; }
 
         // navigation property para makuha si credentials, also for one-to-one relationship sheesh stick to one
-        public LandLordCredentials? LandLordCredentials { get; set; }
+        public LandLordCredential? LandLordCredential { get; set; }
 
 
         [ForeignKey("UserId")]

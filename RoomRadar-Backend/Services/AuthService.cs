@@ -56,6 +56,7 @@ namespace RoomRadar_Backend.Services
         public AuthResponseDTO CreateUser(UserRegistrationDTO userRegistrationCredentials)
         {
             string? newUserEmail = userRegistrationCredentials.Email;
+            bool saveAsPending = userRegistrationCredentials.IsLandLord == true;
 
             bool isExistingEmail = _authRepository.IsExistingEmail(newUserEmail);
 
@@ -91,14 +92,30 @@ namespace RoomRadar_Backend.Services
                 Profile = profile
             };
 
-            _authRepository.CreateUser(newUser);
+          
 
-            return new AuthResponseDTO
+            if (saveAsPending)
             {
-                IsSuccess = true,
-                Type = "Valid",
-                User = newUser
-            };
+                newUser.Profile.IsLandLord = false;
+                _authRepository.CreateUser(newUser);
+                _authRepository.SaveAsPending(new PendingLandLord { LandLord = newUser});
+                return new AuthResponseDTO
+                {
+                    IsSuccess = true,
+                    Type = "SavedAsPending",
+                    User = newUser
+                };
+            }
+            else
+            {
+                _authRepository.CreateUser(newUser);
+                return new AuthResponseDTO
+                {
+                    IsSuccess = true,
+                    Type = "SavedAsUser",
+                    User = newUser
+                };
+            }
         }
 
         private bool ValidatePassword(string password, string pwFromDb)

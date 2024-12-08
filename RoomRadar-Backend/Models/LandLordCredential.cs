@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RoomRadar_Backend.Models
 {
-    public class LandLordCredentials
+    public class LandLordCredential
     {
         public int Id { get; set; }
 

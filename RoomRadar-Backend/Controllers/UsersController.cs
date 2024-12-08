@@ -25,7 +25,7 @@ namespace RoomRadar_Backend.Controllers
             return Ok(response); 
         }    
 
-        [HttpGet    ]
+        [HttpGet]
         [Route("{id}/", Name = "GetUserById")]
         public IActionResult GetUserById(int id)
         {
