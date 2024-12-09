@@ -37,5 +37,27 @@ namespace RoomRadar_Backend.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost]
+        [Route("pending-landlord/delete/{id}/", Name = "DeletePendingLandLord")]
+        public IActionResult DeletePendingLandLordById(int id)
+        {
+            UserResponseDTO response = _userService.DeletePendingLandLordById(id);
+            if (response.IsSuccess)
+            {
+                return NoContent();
+            }
+
+            return NotFound(response);
+
+        }
+
+        [HttpGet]
+        [Route("pending-landlord/", Name = "GetAllPendingLandLords")]
+        public IActionResult GetAllPendingLandLords()
+        {
+            UserResponseDTO response = _userService.GetAllPendingLandLords();
+            return Ok(response);
+        }
     }
 }

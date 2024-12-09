@@ -7,6 +7,8 @@ namespace RoomRadar_Backend.Services
     {
         public UserResponseDTO GetAllUsers();
         public UserResponseDTO GetUserById(int id);
-        
+
+        public UserResponseDTO DeletePendingLandLordById(int id);
+        public UserResponseDTO GetAllPendingLandLords();
     }
 }

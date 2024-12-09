@@ -10,7 +10,6 @@
             public DbSet<User> Users { get; set; }
             public DbSet<UserProfile> Profiles { get; set; } 
             public DbSet<UserAccount> UserAccounts { get; set; }
-            public DbSet<LandLordCredential> LandLordCredentials { get; set; }
             public DbSet<PendingLandLord> PendingLandLords { get; set; }
         }
     }

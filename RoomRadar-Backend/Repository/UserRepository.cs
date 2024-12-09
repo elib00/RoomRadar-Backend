@@ -28,9 +28,26 @@ namespace RoomRadar_Backend.Repository
                 .FirstOrDefault(u => u.Id == id);
         }
 
+        public PendingLandLord GetPendingLandLordById(int id)
+        {
+            return _backendDbContext.PendingLandLords.FirstOrDefault(pl => pl.Id == id);
+        }
+
         public List<PendingLandLord> GetAllPendingLandLords()
         {
-            return _backendDbContext.PendingLandLords.Include(pl => pl.LandLord).ToList();
+            return _backendDbContext.PendingLandLords
+                .Include(pl => pl.LandLord)
+                    .ThenInclude(user => user.Account)
+                .Include(pl => pl.LandLord)
+                    .ThenInclude(user => user.Profile)
+                .ToList();
         }
+
+        public void DeletePendingLandLord(PendingLandLord pendingLandLord)
+        {
+            _backendDbContext.PendingLandLords.Remove(pendingLandLord);
+            _backendDbContext.SaveChanges();
+        }
+
     }
 }

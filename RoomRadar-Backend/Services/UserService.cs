@@ -49,6 +49,39 @@ namespace RoomRadar_Backend.Services
             };
         }
 
+        public UserResponseDTO DeletePendingLandLordById(int id)
+        {
+            PendingLandLord landLordToDelete = _userRepository.GetPendingLandLordById(id);
+            if(landLordToDelete == null)
+            {
+                return new UserResponseDTO
+                {
+                    IsSuccess = false,
+                    Type = "LandLordNotFound",
+                    Data = null
+                };
+            }
+
+            _userRepository.DeletePendingLandLord(landLordToDelete);
+            return new UserResponseDTO
+            {
+                IsSuccess = true,
+                Type = "DeletedPendingLandLord",
+                Data = null
+            };
+        }
+
+        public UserResponseDTO GetAllPendingLandLords()
+        {
+            List<PendingLandLord> pendingLandLords = _userRepository.GetAllPendingLandLords();
+            return new UserResponseDTO
+            {
+                IsSuccess = true,
+                Type = "PendingLandLordsFetchSuccessful",
+                Data = pendingLandLords
+            };
+        }
+
 
 
     }

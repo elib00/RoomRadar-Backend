@@ -9,8 +9,6 @@ namespace RoomRadar_Backend.Models
         public int Id { get; set; }
 
         public int UserId { get; set; }
-
-        [JsonIgnore]
         public User? LandLord { get; set; }
     }
 }
