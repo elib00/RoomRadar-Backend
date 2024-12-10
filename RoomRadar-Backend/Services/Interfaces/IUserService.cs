@@ -5,10 +5,10 @@ namespace RoomRadar_Backend.Services
 {
     public interface IUserService
     {
-        public UserResponseDTO GetAllUsers();
-        public UserResponseDTO GetUserById(int id);
+        public ApiResponseDTO GetAllUsers();
+        public ApiResponseDTO GetUserById(int id);
 
-        public UserResponseDTO DeletePendingLandLordById(int id);
-        public UserResponseDTO GetAllPendingLandLords();
+        public ApiResponseDTO DeletePendingLandLordById(int id);
+        public ApiResponseDTO GetAllPendingLandLords();
     }
 }

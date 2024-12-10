@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RoomRadar_Backend;
 
@@ -11,9 +12,11 @@ using RoomRadar_Backend;
 namespace RoomRadar_Backend.Migrations
 {
     [DbContext(typeof(BackendDbContext))]
-    partial class BackendDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241209231330_BoardingHouseTable")]
+    partial class BoardingHouseTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,7 +33,7 @@ namespace RoomRadar_Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AdditionalFeesJson")
+                    b.Property<string>("AdditionalFees")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("AllowPets")
@@ -58,12 +61,15 @@ namespace RoomRadar_Backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PropertyName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PropertyType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RulesJson")
+                    b.Property<string>("Rules")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -71,29 +77,6 @@ namespace RoomRadar_Backend.Migrations
                     b.HasIndex("LandLordId");
 
                     b.ToTable("BoardingHouses");
-                });
-
-            modelBuilder.Entity("RoomRadar_Backend.Models.Favorite", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BoardingHouseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BoardingHouseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("RoomRadar_Backend.Models.PendingLandLord", b =>
@@ -112,29 +95,6 @@ namespace RoomRadar_Backend.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("PendingLandLords");
-                });
-
-            modelBuilder.Entity("RoomRadar_Backend.Models.Rating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BoardingHouseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BoardingHouseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("RoomRadar_Backend.Models.User", b =>
@@ -231,21 +191,27 @@ namespace RoomRadar_Backend.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<string>("Barangay")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Country")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Municipality")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("PostalCode")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Province")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Street")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("BoardingHouseId");
@@ -280,27 +246,7 @@ namespace RoomRadar_Backend.Migrations
 
                     b.Navigation("LandLord");
 
-                    b.Navigation("Location")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RoomRadar_Backend.Models.Favorite", b =>
-                {
-                    b.HasOne("RoomRadar_Backend.Models.BoardingHouse", "BoardingHouse")
-                        .WithMany("Favorites")
-                        .HasForeignKey("BoardingHouseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("RoomRadar_Backend.Models.User", "User")
-                        .WithMany("Favorites")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("BoardingHouse");
-
-                    b.Navigation("User");
+                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("RoomRadar_Backend.Models.PendingLandLord", b =>
@@ -312,25 +258,6 @@ namespace RoomRadar_Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("LandLord");
-                });
-
-            modelBuilder.Entity("RoomRadar_Backend.Models.Rating", b =>
-                {
-                    b.HasOne("RoomRadar_Backend.Models.BoardingHouse", "BoardingHouse")
-                        .WithMany("Ratings")
-                        .HasForeignKey("BoardingHouseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("RoomRadar_Backend.Models.User", "User")
-                        .WithMany("Ratings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("BoardingHouse");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RoomRadar_Backend.Models.UserAccount", b =>
@@ -355,24 +282,13 @@ namespace RoomRadar_Backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RoomRadar_Backend.Models.BoardingHouse", b =>
-                {
-                    b.Navigation("Favorites");
-
-                    b.Navigation("Ratings");
-                });
-
             modelBuilder.Entity("RoomRadar_Backend.Models.User", b =>
                 {
                     b.Navigation("Account")
                         .IsRequired();
 
-                    b.Navigation("Favorites");
-
                     b.Navigation("Profile")
                         .IsRequired();
-
-                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

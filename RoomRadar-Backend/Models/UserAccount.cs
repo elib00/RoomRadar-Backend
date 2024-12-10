@@ -10,7 +10,9 @@ namespace RoomRadar_Backend.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "Lacking credentials. Email must be provided.")]
         public required string Email { get; set; }
-        public required string Password { get; set; }
+
+        [JsonIgnore]
+        public string Password { get; set; }
 
         [ForeignKey("UserId")]
         [Required]

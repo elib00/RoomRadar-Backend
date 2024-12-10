@@ -5,7 +5,7 @@ using RoomRadar_Backend.DTO;
 
 namespace RoomRadar_Backend.Controllers
 {
-    [ApiController]
+    [ApiController]//to automatically return a bad request if naay kulang ang request body
     [Route("api/auth/")]
     public class AuthController : ControllerBase
     {
@@ -17,12 +17,12 @@ namespace RoomRadar_Backend.Controllers
         }
 
         [HttpPost]
-        [Route("register")]
+        [Route("register/")]
         public IActionResult CreateUser([FromBody] UserRegistrationDTO userRegistrationCredentials)
         {
-            AuthResponseDTO response = _authService.CreateUser(userRegistrationCredentials);
+            ApiResponseDTO response = _authService.CreateUser(userRegistrationCredentials);
 
-            if (!response.IsSuccess && response.Type == "EmailAlreadyInUse")
+            if (!response.Success && response.Type == "EmailAlreadyInUse")
             {
                 return Conflict(response);
             }
@@ -31,11 +31,11 @@ namespace RoomRadar_Backend.Controllers
         }
 
         [HttpPost]
-        [Route("login")]
+        [Route("login/")]
         public IActionResult ValidateUser([FromBody] UserValidationDTO userValidationCredentials)
         {
-            AuthResponseDTO response = _authService.ValidateUser(userValidationCredentials);
-            if (!response.IsSuccess)
+            ApiResponseDTO response = _authService.ValidateUser(userValidationCredentials);
+            if (!response.Success)
             {
                 if(response.Type == "IncorrectPassword")
                 {

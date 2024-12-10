@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RoomRadar_Backend;
 
@@ -11,9 +12,11 @@ using RoomRadar_Backend;
 namespace RoomRadar_Backend.Migrations
 {
     [DbContext(typeof(BackendDbContext))]
-    partial class BackendDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241210122825_FixedCascadingProblem")]
+    partial class FixedCascadingProblem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,29 +74,6 @@ namespace RoomRadar_Backend.Migrations
                     b.HasIndex("LandLordId");
 
                     b.ToTable("BoardingHouses");
-                });
-
-            modelBuilder.Entity("RoomRadar_Backend.Models.Favorite", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BoardingHouseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BoardingHouseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("RoomRadar_Backend.Models.PendingLandLord", b =>
@@ -284,25 +264,6 @@ namespace RoomRadar_Backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RoomRadar_Backend.Models.Favorite", b =>
-                {
-                    b.HasOne("RoomRadar_Backend.Models.BoardingHouse", "BoardingHouse")
-                        .WithMany("Favorites")
-                        .HasForeignKey("BoardingHouseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("RoomRadar_Backend.Models.User", "User")
-                        .WithMany("Favorites")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("BoardingHouse");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RoomRadar_Backend.Models.PendingLandLord", b =>
                 {
                     b.HasOne("RoomRadar_Backend.Models.User", "LandLord")
@@ -357,8 +318,6 @@ namespace RoomRadar_Backend.Migrations
 
             modelBuilder.Entity("RoomRadar_Backend.Models.BoardingHouse", b =>
                 {
-                    b.Navigation("Favorites");
-
                     b.Navigation("Ratings");
                 });
 
@@ -366,8 +325,6 @@ namespace RoomRadar_Backend.Migrations
                 {
                     b.Navigation("Account")
                         .IsRequired();
-
-                    b.Navigation("Favorites");
 
                     b.Navigation("Profile")
                         .IsRequired();

@@ -5,7 +5,7 @@ namespace RoomRadar_Backend.Services.Interfaces
 {
     public interface IAuthService
     {
-        AuthResponseDTO ValidateUser(UserValidationDTO userValidationCredentails);
-        AuthResponseDTO CreateUser(UserRegistrationDTO userRegistrationCredentials);
+        ApiResponseDTO ValidateUser(UserValidationDTO userValidationCredentials);
+        ApiResponseDTO CreateUser(UserRegistrationDTO userRegistrationCredentials);
     }
 }

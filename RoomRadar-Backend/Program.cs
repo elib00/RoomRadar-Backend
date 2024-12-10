@@ -20,6 +20,9 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddTransient<IBoardingHouseService, BoardingHouseService>();
+builder.Services.AddScoped<IBoardingHouseRepository, BoardingHouseRepository>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -28,11 +31,12 @@ builder.Services.AddSwaggerGen();
 //cors policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:3000")
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 
@@ -45,7 +49,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("SpecificOrigins"); //for cors
+app.UseCors("AllowFrontend"); //for cors
 
 app.UseHttpsRedirection();
 

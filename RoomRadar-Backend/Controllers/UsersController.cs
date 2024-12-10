@@ -21,7 +21,7 @@ namespace RoomRadar_Backend.Controllers
         [Route("", Name = "GetUsers")]
         public IActionResult GetUsers()
         {
-            UserResponseDTO response = _userService.GetAllUsers();
+            ApiResponseDTO response = _userService.GetAllUsers();
             return Ok(response); 
         }    
 
@@ -29,8 +29,8 @@ namespace RoomRadar_Backend.Controllers
         [Route("{id}/", Name = "GetUserById")]
         public IActionResult GetUserById(int id)
         {
-            UserResponseDTO response = _userService.GetUserById(id);
-            if (!response.IsSuccess && response.Type == "UserNotFound")
+            ApiResponseDTO response = _userService.GetUserById(id);
+            if (!response.Success && response.Type == "UserNotFound")
             {
                 return NotFound(response);
             }
@@ -42,8 +42,8 @@ namespace RoomRadar_Backend.Controllers
         [Route("pending-landlord/delete/{id}/", Name = "DeletePendingLandLord")]
         public IActionResult DeletePendingLandLordById(int id)
         {
-            UserResponseDTO response = _userService.DeletePendingLandLordById(id);
-            if (response.IsSuccess)
+            ApiResponseDTO response = _userService.DeletePendingLandLordById(id);
+            if (response.Success)
             {
                 return NoContent();
             }
@@ -56,7 +56,7 @@ namespace RoomRadar_Backend.Controllers
         [Route("pending-landlord/", Name = "GetAllPendingLandLords")]
         public IActionResult GetAllPendingLandLords()
         {
-            UserResponseDTO response = _userService.GetAllPendingLandLords();
+            ApiResponseDTO response = _userService.GetAllPendingLandLords();
             return Ok(response);
         }
     }

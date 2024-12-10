@@ -16,67 +16,67 @@ namespace RoomRadar_Backend.Services
             _userRepository = userRepository;
         }
 
-        public UserResponseDTO GetAllUsers()
+        public ApiResponseDTO GetAllUsers()
         {
             List<User> users = _userRepository.GetAllUsers();
-            return new UserResponseDTO
+            return new ApiResponseDTO
             {
-                IsSuccess = true,
+                Success = true,
                 Type = "Valid",
                 Data = users
             };
         }
 
-        public UserResponseDTO GetUserById(int id)
+        public ApiResponseDTO GetUserById(int id)
         {
             User userFromDb = _userRepository.GetUserById(id);
 
             if(userFromDb == null)
             {
-                return new UserResponseDTO
+                return new ApiResponseDTO
                 {
-                    IsSuccess = false,
+                    Success = false,
                     Type = "UserNotFound",
                     Data = null
                 };
             }
 
-            return new UserResponseDTO
+            return new ApiResponseDTO
             {
-                IsSuccess = true,
+                Success = true,
                 Type = "Valid",
                 Data = userFromDb
             };
         }
 
-        public UserResponseDTO DeletePendingLandLordById(int id)
+        public ApiResponseDTO DeletePendingLandLordById(int id)
         {
             PendingLandLord landLordToDelete = _userRepository.GetPendingLandLordById(id);
             if(landLordToDelete == null)
             {
-                return new UserResponseDTO
+                return new ApiResponseDTO
                 {
-                    IsSuccess = false,
+                    Success = false,
                     Type = "LandLordNotFound",
                     Data = null
                 };
             }
 
             _userRepository.DeletePendingLandLord(landLordToDelete);
-            return new UserResponseDTO
+            return new ApiResponseDTO
             {
-                IsSuccess = true,
+                Success = true,
                 Type = "DeletedPendingLandLord",
                 Data = null
             };
         }
 
-        public UserResponseDTO GetAllPendingLandLords()
+        public ApiResponseDTO GetAllPendingLandLords()
         {
             List<PendingLandLord> pendingLandLords = _userRepository.GetAllPendingLandLords();
-            return new UserResponseDTO
+            return new ApiResponseDTO
             {
-                IsSuccess = true,
+                Success = true,
                 Type = "PendingLandLordsFetchSuccessful",
                 Data = pendingLandLords
             };
