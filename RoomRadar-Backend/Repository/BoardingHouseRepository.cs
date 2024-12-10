@@ -17,6 +17,7 @@ namespace RoomRadar_Backend.Repository
         public List<BoardingHouseForViewingDTO> GetAllBoardingHousesForViewing()
         {
             return _backendDbContext.BoardingHouses
+                .Include(b => b.Ratings)
                 .Select(b => new BoardingHouseForViewingDTO
                 {
                     BoardingHouseId = b.Id,
@@ -25,7 +26,9 @@ namespace RoomRadar_Backend.Repository
                     Price = b.MonthlyRate,
                     LandLordFirstName = b.LandLord.Profile.FirstName,
                     LandLordLastName = b.LandLord.Profile.LastName,
-                    LandLordContactNumber = b.LandLord.Profile.ContactNumber
+                    LandLordContactNumber = b.LandLord.Profile.ContactNumber,
+                    TruncatedAverageRating = GetAverageRating(b),
+                    TotalFavoritesFromUsers = GetTotalFavoritesFromUsers(b)
                 })
                 .ToList();
 
@@ -35,6 +38,27 @@ namespace RoomRadar_Backend.Repository
         {
             _backendDbContext.BoardingHouses.Add(boardingHouse);
             _backendDbContext.SaveChanges();
+        }
+
+        public void AddBoardingHouseRating(Rating newRating)
+        {
+            _backendDbContext.Ratings.Add(newRating);
+            _backendDbContext.SaveChanges(true);
+        }
+
+        private static int GetAverageRating (BoardingHouse boardingHouse)
+        {
+            ICollection<Rating> ratings = boardingHouse.Ratings;
+            if (ratings.Count == 0) return 0;
+
+            double averageRating = ratings.Average(rating => rating.Star);
+
+            return (int)Math.Floor(averageRating);
+        }
+
+        private static int GetTotalFavoritesFromUsers(BoardingHouse boardingHouse)
+        {
+            return boardingHouse.Favorites.Count;
         }
     }
 }

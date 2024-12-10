@@ -28,8 +28,9 @@ namespace RoomRadar_Backend.Models
         public string? AmenitiesJson {  get; set; }
         public bool AllowPets { get; set; }
         public string? AdditionalFeesJson {  get; set; }
-        public ICollection<Rating> Ratings { get; set; }
-        public ICollection<Favorite> Favorites { get; set; }
+        //initialize to prevent null checks
+        public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+        public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
     }
 
     [Owned]

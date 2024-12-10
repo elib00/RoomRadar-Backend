@@ -31,5 +31,13 @@ namespace RoomRadar_Backend.Controllers
             ApiResponseDTO response = _boardingHouseService.CreateBoardingHouseListing(boardingHouseListingDTO);
             return Ok(response);
         }
+
+        [HttpPost]
+        [Route("add-rating/", Name = "AddBoardingHouseRating")]
+        public IActionResult AddBoardingHouseRating([FromBody] CreateRatingDTO ratingDTO)
+        {
+            ApiResponseDTO response = _boardingHouseService.AddBoardingHouseRating(ratingDTO);
+            return Ok(response);
+        }
     } 
 }

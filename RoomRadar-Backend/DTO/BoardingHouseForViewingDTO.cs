@@ -10,5 +10,7 @@
         public string? LandLordFirstName {  get; set; }
         public string? LandLordLastName { get; set; }
         public string? LandLordContactNumber {  get; set; }
+        public int TruncatedAverageRating {  get; set; }
+        public int TotalFavoritesFromUsers { get; set; }
     }
 }

@@ -3,6 +3,8 @@ using RoomRadar_Backend.Models;
 using RoomRadar_Backend.Repository.Interfaces;
 using RoomRadar_Backend.Services.Interfaces;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace RoomRadar_Backend.Services
 {
@@ -68,6 +70,30 @@ namespace RoomRadar_Backend.Services
                 Success = true,
                 Type = "ListingSuccessful",
                 Data = newBoardingHouse
+            };
+        }
+
+        public ApiResponseDTO AddBoardingHouseRating(CreateRatingDTO ratingDTO)
+        {
+            Rating newRating = new Rating
+            {
+                UserId = ratingDTO.UserId,
+                BoardingHouseId = ratingDTO.BoardingHouseId,
+                Star = ratingDTO.Star
+            };
+
+            _boardingHouseRepository.AddBoardingHouseRating(newRating);
+
+            return new ApiResponseDTO
+            {
+                Success = true,
+                Type = "RatingAdditionSuccessful",
+                Data = new
+                {
+                    UserId = newRating.UserId,
+                    BoardingHouseId = newRating.BoardingHouseId,
+                    Star = newRating.Star
+                }
             };
         }
 

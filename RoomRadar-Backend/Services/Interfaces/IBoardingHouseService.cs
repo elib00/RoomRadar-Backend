@@ -7,5 +7,6 @@ namespace RoomRadar_Backend.Services.Interfaces
     {
         public ApiResponseDTO GetAllBoardingHousesForViewing();
         public ApiResponseDTO CreateBoardingHouseListing(BoardingHouseListingDTO boardingHouseDetails);
+        public ApiResponseDTO AddBoardingHouseRating(CreateRatingDTO ratingDTO);
     }
 }

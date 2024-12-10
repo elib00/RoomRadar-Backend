@@ -10,6 +10,8 @@ namespace RoomRadar_Backend.Models
         [ForeignKey("UserId")]
         public int UserId { get; set; }
 
+        public int Star {  get; set; }
+
         public User? User { get; set; }
         public BoardingHouse? BoardingHouse { get; set; }
     }

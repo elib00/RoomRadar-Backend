@@ -7,5 +7,6 @@ namespace RoomRadar_Backend.Repository.Interfaces
     {
         public List<BoardingHouseForViewingDTO> GetAllBoardingHousesForViewing();
         public void CreateBoardingHouseListing(BoardingHouse boardingHouseDetails);
+        public void AddBoardingHouseRating(Rating rating);
     }
 }
