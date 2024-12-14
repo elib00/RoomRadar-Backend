@@ -3,8 +3,6 @@ using RoomRadar_Backend.Models;
 using RoomRadar_Backend.Repository.Interfaces;
 using RoomRadar_Backend.Services.Interfaces;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc;
-
 
 namespace RoomRadar_Backend.Services
 {
@@ -142,6 +140,7 @@ namespace RoomRadar_Backend.Services
         public ApiResponseDTO GetBoardingHouseDetails(int boardingHouseId)
         {
             BoardingHouse boardingHouse = _boardingHouseRepository.GetBoardingHouseDetails(boardingHouseId);
+
             return new ApiResponseDTO
             {
                 Success = true, 
