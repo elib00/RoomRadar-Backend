@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RoomRadar_Backend.DTO;
 using RoomRadar_Backend.Models;
 
 namespace RoomRadar_Backend.Repository
@@ -47,6 +48,26 @@ namespace RoomRadar_Backend.Repository
         {
             _backendDbContext.PendingLandLords.Remove(pendingLandLord);
             _backendDbContext.SaveChanges();
+        }
+
+        public List<BoardingHouseForViewingDTO> GetLandLordListings(int landLordId)
+        {
+            return _backendDbContext.BoardingHouses
+                .Where(b => b.LandLordId == landLordId)
+                .Select(b => new BoardingHouseForViewingDTO
+                {
+                    BoardingHouseId = b.Id,
+                    Latitude = b.Location.Latitude,
+                    Longitude = b.Location.Longitude,
+                    Price = b.MonthlyRate,
+                    LandLordFirstName = b.LandLord.Profile.FirstName,
+                    LandLordLastName = b.LandLord.Profile.LastName,
+                    LandLordContactNumber = b.LandLord.Profile.ContactNumber,
+                    TruncatedAverageRating = b.Ratings.Any() ? (int)Math.Floor(b.Ratings.Average(rating => rating.Star)) : 0,
+                    TotalFavoritesFromUsers = b.Favorites.Count
+
+                })
+                .ToList();
         }
 
     }

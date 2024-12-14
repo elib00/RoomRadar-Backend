@@ -10,5 +10,6 @@ namespace RoomRadar_Backend.Services
 
         public ApiResponseDTO DeletePendingLandLordById(int id);
         public ApiResponseDTO GetAllPendingLandLords();
+        public ApiResponseDTO GetLandLordListings(int landLordId);
     }
 }

@@ -82,7 +82,15 @@ namespace RoomRadar_Backend.Services
             };
         }
 
-
-
+        public ApiResponseDTO GetLandLordListings(int landLordId)
+        {
+            List<BoardingHouseForViewingDTO> landLordListings = _userRepository.GetLandLordListings(landLordId);
+            return new ApiResponseDTO
+            {
+                Success = true,
+                Type = "LandLordListingsFetchSuccessful",
+                Data = landLordListings
+            };
+        }
     }
 }

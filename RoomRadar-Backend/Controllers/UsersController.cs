@@ -7,7 +7,7 @@ namespace RoomRadar_Backend.Controllers
 {
     [ApiController]
     [Route("api/users/")]
-    public class UsersController: ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
 
@@ -22,8 +22,8 @@ namespace RoomRadar_Backend.Controllers
         public IActionResult GetUsers()
         {
             ApiResponseDTO response = _userService.GetAllUsers();
-            return Ok(response); 
-        }    
+            return Ok(response);
+        }
 
         [HttpGet]
         [Route("{id}/", Name = "GetUserById")]
@@ -49,7 +49,6 @@ namespace RoomRadar_Backend.Controllers
             }
 
             return NotFound(response);
-
         }
 
         [HttpGet]
@@ -57,6 +56,14 @@ namespace RoomRadar_Backend.Controllers
         public IActionResult GetAllPendingLandLords()
         {
             ApiResponseDTO response = _userService.GetAllPendingLandLords();
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("listings/{id}/", Name = "GetAllListingsOfLandLord")]
+        public IActionResult GetLandLordListings(int id)
+        {
+            ApiResponseDTO response = _userService.GetLandLordListings(id);
             return Ok(response);
         }
     }

@@ -75,6 +75,16 @@ namespace RoomRadar_Backend.Services
 
         public ApiResponseDTO AddBoardingHouseRating(CreateRatingDTO ratingDTO)
         {
+            if (_boardingHouseRepository.UserAlreadyRatedBoardingHouse(ratingDTO.UserId, ratingDTO.BoardingHouseId))
+            {
+                return new ApiResponseDTO
+                {
+                    Success = false,
+                    Type = "UserAlreadyRated",
+                    Data = null
+                };
+            }
+
             Rating newRating = new Rating
             {
                 UserId = ratingDTO.UserId,
@@ -96,6 +106,50 @@ namespace RoomRadar_Backend.Services
                 }
             };
         }
+
+        public ApiResponseDTO AddBoardingHouseFavorite(CreateFavoriteDTO favDTO)
+        {
+            if (_boardingHouseRepository.UserAlreadyFavoritedBoardingHouse(favDTO.UserId, favDTO.BoardingHouseId))
+            {
+                return new ApiResponseDTO
+                {
+                    Success = false,
+                    Type = "UserAlreadyFavorited",
+                    Data = null
+                };
+            }
+
+            Favorite newFav = new Favorite
+            {
+                UserId = favDTO.UserId,
+                BoardingHouseId = favDTO.BoardingHouseId
+            };
+
+            _boardingHouseRepository.AddBoardingHouseFavorite(newFav);
+
+            return new ApiResponseDTO
+            {
+                Success = true,
+                Type = "FavoriteAdditionSuccessful",
+                Data = new
+                {
+                    UserId = favDTO.UserId,
+                    BoardingHouseId = favDTO.BoardingHouseId
+                }
+            };
+        }
+
+        public ApiResponseDTO GetBoardingHouseDetails(int boardingHouseId)
+        {
+            BoardingHouse boardingHouse = _boardingHouseRepository.GetBoardingHouseDetails(boardingHouseId);
+            return new ApiResponseDTO
+            {
+                Success = true, 
+                Type = "BoardingHouseDetailsFetchSuccessful",
+                Data = boardingHouse
+            };
+        }
+
 
     }
 }

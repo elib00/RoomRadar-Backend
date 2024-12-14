@@ -39,5 +39,21 @@ namespace RoomRadar_Backend.Controllers
             ApiResponseDTO response = _boardingHouseService.AddBoardingHouseRating(ratingDTO);
             return Ok(response);
         }
+
+        [HttpPost]
+        [Route("add-favorite/", Name = "AddBoardingHouseFavorite")]
+        public IActionResult AddBoardingHouseFavorite([FromBody] CreateFavoriteDTO boardingHouseFavoriteDTO)
+        {
+            ApiResponseDTO response = _boardingHouseService.AddBoardingHouseFavorite(boardingHouseFavoriteDTO);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("{id}/")]
+        public IActionResult GetBoardingHouseDetails(int id)
+        {
+            ApiResponseDTO response = _boardingHouseService.GetBoardingHouseDetails(id);
+            return Ok(response);
+        }
     } 
 }

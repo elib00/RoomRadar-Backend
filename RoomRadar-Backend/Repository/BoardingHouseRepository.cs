@@ -18,6 +18,7 @@ namespace RoomRadar_Backend.Repository
         {
             return _backendDbContext.BoardingHouses
                 .Include(b => b.Ratings)
+                .Include(b => b.Favorites)
                 .Select(b => new BoardingHouseForViewingDTO
                 {
                     BoardingHouseId = b.Id,
@@ -27,11 +28,11 @@ namespace RoomRadar_Backend.Repository
                     LandLordFirstName = b.LandLord.Profile.FirstName,
                     LandLordLastName = b.LandLord.Profile.LastName,
                     LandLordContactNumber = b.LandLord.Profile.ContactNumber,
-                    TruncatedAverageRating = GetAverageRating(b),
-                    TotalFavoritesFromUsers = GetTotalFavoritesFromUsers(b)
+                    TruncatedAverageRating = b.Ratings.Any() ? (int)Math.Floor(b.Ratings.Average(rating => rating.Star)) : 0,
+                    TotalFavoritesFromUsers = b.Favorites.Count
+
                 })
                 .ToList();
-
         }
 
         public void CreateBoardingHouseListing(BoardingHouse boardingHouse)
@@ -46,19 +47,45 @@ namespace RoomRadar_Backend.Repository
             _backendDbContext.SaveChanges(true);
         }
 
-        private static int GetAverageRating (BoardingHouse boardingHouse)
+        public bool UserAlreadyRatedBoardingHouse(int userId, int boardingHouseId)
         {
-            ICollection<Rating> ratings = boardingHouse.Ratings;
-            if (ratings.Count == 0) return 0;
-
-            double averageRating = ratings.Average(rating => rating.Star);
-
-            return (int)Math.Floor(averageRating);
+            return _backendDbContext.Ratings.Any(r => r.UserId == userId && r.BoardingHouseId == boardingHouseId);
         }
 
-        private static int GetTotalFavoritesFromUsers(BoardingHouse boardingHouse)
+
+        public void AddBoardingHouseFavorite(Favorite favorite)
         {
-            return boardingHouse.Favorites.Count;
+            _backendDbContext.Favorites.Add(favorite);
+            _backendDbContext.SaveChanges();
         }
+
+        public bool UserAlreadyFavoritedBoardingHouse(int userId, int boardingHouseId)
+        {
+            return _backendDbContext.Favorites.Any(f => f.UserId == userId && f.BoardingHouseId == boardingHouseId);
+        }
+
+        public BoardingHouse GetBoardingHouseDetails(int boardingHouseId)
+        {
+            return _backendDbContext.BoardingHouses
+                .Include(b => b.Ratings)
+                .Include(b => b.LandLord)
+                    .ThenInclude(u => u.Profile)
+                .FirstOrDefault(b => b.Id == boardingHouseId);
+        }
+
+        //private static int GetAverageRating (BoardingHouse boardingHouse)
+        //{
+        //    ICollection<Rating> ratings = boardingHouse.Ratings;
+        //    if (ratings.Count == 0) return 0;
+
+        //    double averageRating = ratings.Average(rating => rating.Star);
+
+        //    return (int)Math.Floor(averageRating);
+        //}
+
+        //private static int GetTotalFavoritesFromUsers(BoardingHouse boardingHouse)
+        //{
+        //    return boardingHouse.Favorites.Count;
+        //}
     }
 }
