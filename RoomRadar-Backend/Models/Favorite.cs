@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace RoomRadar_Backend.Models
 {
@@ -10,7 +11,9 @@ namespace RoomRadar_Backend.Models
         [ForeignKey("UserId")]
         public int UserId { get; set; }
 
+        [JsonIgnore]
         public User? User { get; set; }
+        [JsonIgnore]
         public BoardingHouse? BoardingHouse { get; set; }
     }
 }

@@ -4,6 +4,7 @@
     {
         // to add rating table and isFavorite
         public double BoardingHouseId { get; set; }
+        public string? BoardingHouseName {  get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public double Price { get; set; }

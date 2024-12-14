@@ -57,6 +57,7 @@ namespace RoomRadar_Backend.Repository
                 .Select(b => new BoardingHouseForViewingDTO
                 {
                     BoardingHouseId = b.Id,
+                    BoardingHouseName = b.PropertyName,
                     Latitude = b.Location.Latitude,
                     Longitude = b.Location.Longitude,
                     Price = b.MonthlyRate,

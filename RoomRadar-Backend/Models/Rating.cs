@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace RoomRadar_Backend.Models
 {
@@ -12,7 +13,9 @@ namespace RoomRadar_Backend.Models
 
         public int Star {  get; set; }
 
+        [JsonIgnore]
         public User? User { get; set; }
+        [JsonIgnore]
         public BoardingHouse? BoardingHouse { get; set; }
     }
 }
