@@ -49,10 +49,18 @@ namespace RoomRadar_Backend.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/")]
+        [Route("{id}/", Name = "GetBoardingHouseDetails")]
         public IActionResult GetBoardingHouseDetails(int id)
         {
             ApiResponseDTO response = _boardingHouseService.GetBoardingHouseDetails(id);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("filter/", Name = "FilterListings")]
+        public IActionResult FilterListings([FromBody] ListingFiltersDTO listingFiltersDTO)
+        {
+            ApiResponseDTO response = _boardingHouseService.FilterListings(listingFiltersDTO);
             return Ok(response);
         }
     } 

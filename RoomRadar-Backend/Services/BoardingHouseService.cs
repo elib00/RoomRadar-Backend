@@ -149,6 +149,17 @@ namespace RoomRadar_Backend.Services
             };
         }
 
+        public ApiResponseDTO FilterListings(ListingFiltersDTO listingFiltersDTO)
+        {
+            List<BoardingHouseForViewingDTO> listings = _boardingHouseRepository.FilterListings(listingFiltersDTO);
+            return new ApiResponseDTO
+            {
+                Success = true,
+                Type = "FilterApplicationSuccessful",
+                Data = listings
+            }
+        }
+
 
     }
 }

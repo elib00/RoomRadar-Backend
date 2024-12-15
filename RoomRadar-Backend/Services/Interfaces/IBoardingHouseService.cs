@@ -10,5 +10,6 @@ namespace RoomRadar_Backend.Services.Interfaces
         public ApiResponseDTO AddBoardingHouseRating(CreateRatingDTO ratingDTO);
         public ApiResponseDTO AddBoardingHouseFavorite(CreateFavoriteDTO favDTO);
         public ApiResponseDTO GetBoardingHouseDetails(int boardingHouseId);
+        public ApiResponseDTO FilterListings(ListingFiltersDTO listingFiltersDTO);
     }
 }

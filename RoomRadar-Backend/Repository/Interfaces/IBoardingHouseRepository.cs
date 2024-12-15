@@ -13,5 +13,6 @@ namespace RoomRadar_Backend.Repository.Interfaces
         public void AddBoardingHouseFavorite(Favorite favorite);
         public bool UserAlreadyFavoritedBoardingHouse(int userId, int boardingHouseId);
         public BoardingHouse GetBoardingHouseDetails(int boardingHouseId);
+        public List<BoardingHouseForViewingDTO> FilterListings(ListingFiltersDTO listingFilters);
     }
 }
